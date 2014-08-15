@@ -1,1 +1,7 @@
-{% extends 'rota/base.html' %}
+{% extends 'base/base.html' %}
+{% block body %}
+    {{ csrf_input() }}
+    {{ form_input('Nome','nome','Renzo','Nome é obrigatório') }}
+    {{ form_input('Sobrenome','sobrenome','Nuccitelli','') }}
+
+{% endblock %}

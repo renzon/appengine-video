@@ -2,6 +2,7 @@
 {% macro csrf_input() %}
     <input type="hidden" value="{{ _csrf_code }}" name="_csrf_code"/>
 {% endmacro %}
+
 {% macro form_input(label,property,value,error_msg) %}
     <div class="form-group {{ ' has-error' if error_msg }}">
         <label for="{{ property }}Input"
@@ -11,6 +12,7 @@
         {% if error_msg %}<span class="help-block">{{ error_msg }}</span>{% endif %}
     </div>
 {% endmacro %}
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">

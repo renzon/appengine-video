@@ -14,6 +14,5 @@ def index(_handler):
 
 @login_not_required
 @no_csrf
-def funccao(_resp, _req, nome):
-    nome = _req.get('nome')
-    _resp.write('%s' % (nome))
+def funccao(_resp, nome, sobrenome='Santos'):
+    _resp.write('%s %s' % (nome, sobrenome))

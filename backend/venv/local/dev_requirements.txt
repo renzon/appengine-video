@@ -1,0 +1,1 @@
+/home/renzo/PycharmProjects/projeto/backend/venv/dev_requirements.txt

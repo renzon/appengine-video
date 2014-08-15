@@ -1,5 +1,5 @@
-application: tekton-fullstack
-version: 1
+application: pythonpro-gae
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: yes

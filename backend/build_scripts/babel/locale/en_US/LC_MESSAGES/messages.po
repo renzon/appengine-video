@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-15 15:51-0300\n"
+"POT-Creation-Date: 2014-08-22 11:23-0300\n"
 "PO-Revision-Date: 2014-08-15 15:51-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en_US <LL@li.org>\n"
@@ -84,7 +84,6 @@ msgid "Books"
 msgstr ""
 
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/base/base.html:58
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:8
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/home.html:8
 msgid "Admin"
 msgstr ""
@@ -95,67 +94,6 @@ msgstr ""
 
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/base/base.html:77
 msgid "Login"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:6
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:6
-msgid "This is a generic home for book_app "
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:11
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:9
-msgid "List of Books"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:15
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/form.html:15
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:16
-msgid "Edition"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:16
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/form.html:16
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:17
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/home.html:18
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/form.html:18
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:19
-msgid "Price"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/home.html:17
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/form.html:17
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:18
-msgid "Title"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/form.html:11
-msgid "Book Form"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/form.html:18
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/form.html:21
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/login/facebook/form.html:18
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/login/passwordless/form.html:18
-msgid "Save"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:7
-msgid "Create New Book"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:14
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:14
-msgid "Id"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:15
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:15
-msgid "Creation"
-msgstr ""
-
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/books/admin/home.html:32
-#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:38
-msgid "Are you sure to delete? Press cancel to avoid deletion."
 msgstr ""
 
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/home.html:6
@@ -186,6 +124,12 @@ msgstr ""
 msgid "I"
 msgstr ""
 
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/home.html:18
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/form.html:18
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:19
+msgid "Price"
+msgstr ""
+
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/home.html:19
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/form.html:19
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:20
@@ -202,8 +146,26 @@ msgstr ""
 msgid "Course Form"
 msgstr ""
 
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/form.html:21
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/login/facebook/form.html:18
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/login/passwordless/form.html:18
+msgid "Save"
+msgstr ""
+
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:7
 msgid "Create New Course"
+msgstr ""
+
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:14
+msgid "Id"
+msgstr ""
+
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:15
+msgid "Creation"
+msgstr ""
+
+#: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/courses/admin/home.html:38
+msgid "Are you sure to delete? Press cancel to avoid deletion."
 msgstr ""
 
 #: /home/renzo/PycharmProjects/projeto/backend/appengine/templates/login/home.html:13
@@ -366,4 +328,22 @@ msgstr ""
 #: /home/renzo/PycharmProjects/projeto/backend/venv/lib/python2.7/site-packages/gaeforms/base.py:316
 msgid "MM/dd/YYYY HH:mm:ss"
 msgstr ""
+
+#~ msgid "This is a generic home for book_app "
+#~ msgstr ""
+
+#~ msgid "List of Books"
+#~ msgstr ""
+
+#~ msgid "Edition"
+#~ msgstr ""
+
+#~ msgid "Title"
+#~ msgstr ""
+
+#~ msgid "Book Form"
+#~ msgstr ""
+
+#~ msgid "Create New Book"
+#~ msgstr ""
 

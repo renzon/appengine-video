@@ -2,5 +2,5 @@
 from __future__ import absolute_import, unicode_literals
 
 ADMIN = 'ADMIN'
-
-ALL_PERMISSIONS_LIST = [ADMIN]
+GERENTE = 'GERENTE'
+ALL_PERMISSIONS_LIST = [ADMIN, GERENTE]

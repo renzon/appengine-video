@@ -6,7 +6,8 @@ from gaepermission.decorator import login_not_required, permissions, login_requi
 from permission_app.model import ADMIN, GERENTE
 from tekton import router
 
-@permissions(GERENTE,ADMIN)
+
+@permissions(GERENTE, ADMIN)
 @no_csrf
 def index():
     contexto = {'save_path': router.to_path(salvar)}
@@ -17,9 +18,10 @@ def index():
 def salvar(_resp, nome):
     _resp.write(nome)
 
+
 @login_required
 @no_csrf
-def usuario(_resp,_logged_user):
-    _resp.write('Usuário Logado %s'% _logged_user.key.id())
+def usuario(_resp, _logged_user):
+    _resp.write('Usuário Logado %s' % _logged_user.key.id())
 
 

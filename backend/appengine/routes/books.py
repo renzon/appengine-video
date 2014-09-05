@@ -5,6 +5,7 @@ from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaeforms import base
 from gaeforms.base import Form
+from gaeforms.ndb.form import ModelForm
 from gaegraph.model import Node
 from tekton import router
 
@@ -20,20 +21,21 @@ class Book(Node):
     price = ndb.FloatProperty()
     release = ndb.DateProperty()
 
-class BookForm(Form):
-    title = base.StringField(required=True)
-    price = base.FloatField()
-    release = base.DateField()
+
+class BookForm(ModelForm):
+    _model_class = Book
+    _include = [Book.title, Book.release, Book.price]
 
 
 def salvar(_resp, **propriedades):
-    book_form=BookForm(**propriedades)
-    erros=book_form.validate()
+    book_form = BookForm(**propriedades)
+    erros = book_form.validate()
     if erros:
-       _resp.write(erros)
+        contexto = {'salvar_path': router.to_path(salvar),
+                    'erros': erros,
+                    'book':book_form}
+        return TemplateResponse(contexto, 'books/form.html')
     else:
-        pass
-    # book = Book(title=propriedades['title'],
-    #             price=float(propriedades['price']))
-    # book.put()
-    # _resp.write(propriedades)
+        book = book_form.fill_model()
+        book.put()
+        _resp.write(propriedades)

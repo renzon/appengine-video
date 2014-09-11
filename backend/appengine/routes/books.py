@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+
 from google.appengine.ext import ndb
+
 from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
-from gaeforms import base
-from gaeforms.base import Form
 from gaeforms.ndb.form import ModelForm
 from gaegraph.model import Node
 from tekton import router

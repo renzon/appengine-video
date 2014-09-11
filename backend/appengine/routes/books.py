@@ -10,6 +10,7 @@ from gaegraph.model import Node
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 
+# Handlers
 
 @no_csrf
 def index():
@@ -23,11 +24,12 @@ def index():
         livro['edit_path'] = '%s/%s' % (editar_form_path, livro['id'])
         livro['delete_path'] = '%s/%s' % (delete_path, livro['id'])
     contexto = {'livro_lista': livro_lista,
-                'form_path':router.to_path(form)}
+                'form_path': router.to_path(form)}
     return TemplateResponse(contexto)
 
+
 def delete(book_id):
-    chave=ndb.Key(Book,int(book_id))
+    chave = ndb.Key(Book, int(book_id))
     chave.delete()
     return RedirectResponse(router.to_path(index))
 
@@ -65,20 +67,11 @@ def form():
     return TemplateResponse(contexto)
 
 
+# Modelos
 class Book(Node):
     title = ndb.StringProperty(required=True)
     price = ndb.FloatProperty()
     release = ndb.DateProperty()
-
-
-class BookFormTable(ModelForm):
-    _model_class = Book
-    _include = [Book.title, Book.creation, Book.price]
-
-
-class BookForm(ModelForm):
-    _model_class = Book
-    _include = [Book.title, Book.release, Book.price]
 
 
 def salvar(**propriedades):
@@ -93,3 +86,17 @@ def salvar(**propriedades):
         book = book_form.fill_model()
         book.put()
         return RedirectResponse(router.to_path(index))
+
+
+# Formulários
+class BookFormTable(ModelForm):
+    _model_class = Book
+    _include = [Book.title, Book.creation, Book.price]
+
+
+class BookForm(ModelForm):
+    _model_class = Book
+    _include = [Book.title, Book.release, Book.price]
+
+
+

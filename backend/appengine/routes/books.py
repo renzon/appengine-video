@@ -6,16 +6,19 @@ from google.appengine.ext import ndb
 from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from gaeforms.ndb.form import ModelForm
-from gaegraph.model import Node
+from gaegraph.model import Node, Arc
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 
 # Handlers
 
 @no_csrf
-def index():
-    query = Book.query().order(-Book.price)
-    livro_lista = query.fetch()
+def index(_logged_user):
+    chave_do_usuario=_logged_user.key
+    query = AutorArco.query(AutorArco.origin==chave_do_usuario)
+    autor_arcos=query.fetch()
+    chaves_de_livros=[arco.destination for arco in autor_arcos]
+    livro_lista = ndb.get_multi(chaves_de_livros)
     book_form = BookFormTable()
     livro_lista = [book_form.fill_with_model(livro) for livro in livro_lista]
     editar_form_path = router.to_path(editar_form)
@@ -67,14 +70,7 @@ def form():
     return TemplateResponse(contexto)
 
 
-# Modelos
-class Book(Node):
-    title = ndb.StringProperty(required=True)
-    price = ndb.FloatProperty()
-    release = ndb.DateProperty()
-
-
-def salvar(**propriedades):
+def salvar(_logged_user,**propriedades):
     book_form = BookForm(**propriedades)
     erros = book_form.validate()
     if erros:
@@ -84,11 +80,29 @@ def salvar(**propriedades):
         return TemplateResponse(contexto, 'books/form.html')
     else:
         book = book_form.fill_model()
-        book.put()
+        chave_do_livro=book.put()
+        chave_de_usuario=_logged_user.key
+        autor_arco=AutorArco(origin=chave_de_usuario,destination=chave_do_livro)
+        autor_arco.put()
         return RedirectResponse(router.to_path(index))
 
 
+# Modelos
+class Book(Node):
+    title = ndb.StringProperty(required=True)
+    price = ndb.FloatProperty()
+
+    release = ndb.DateProperty()
+
+
+class AutorArco(Arc):
+    origin = ndb.KeyProperty(required=True)
+    destination = ndb.KeyProperty(Book, required=True)
+
+
 # Formulários
+
+
 class BookFormTable(ModelForm):
     _model_class = Book
     _include = [Book.title, Book.creation, Book.price]

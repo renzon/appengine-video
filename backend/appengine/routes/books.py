@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 
 from config.template_middleware import TemplateResponse
+from gaebusiness.business import Command, CommandParallel
 from gaecookie.decorator import no_csrf
 from gaeforms.ndb.form import ModelForm
 from gaegraph.model import Node, Arc
@@ -14,10 +15,10 @@ from tekton.gae.middleware.redirect import RedirectResponse
 
 @no_csrf
 def index(_logged_user):
-    chave_do_usuario=_logged_user.key
-    query = AutorArco.query(AutorArco.origin==chave_do_usuario)
-    autor_arcos=query.fetch()
-    chaves_de_livros=[arco.destination for arco in autor_arcos]
+    chave_do_usuario = _logged_user.key
+    query = AutorArco.query(AutorArco.origin == chave_do_usuario)
+    autor_arcos = query.fetch()
+    chaves_de_livros = [arco.destination for arco in autor_arcos]
     livro_lista = ndb.get_multi(chaves_de_livros)
     book_form = BookFormTable()
     livro_lista = [book_form.fill_with_model(livro) for livro in livro_lista]
@@ -29,16 +30,6 @@ def index(_logged_user):
     contexto = {'livro_lista': livro_lista,
                 'form_path': router.to_path(form)}
     return TemplateResponse(contexto)
-
-
-def delete(book_id):
-    chave = ndb.Key(Book, int(book_id))
-    futuro=chave.delete_async()
-    query = AutorArco.find_origins(chave)
-    chaves_dos_arcos=query.fetch(keys_only=True)
-    ndb.delete_multi(chaves_dos_arcos)
-    futuro.get_result()
-    return RedirectResponse(router.to_path(index))
 
 
 @no_csrf
@@ -74,7 +65,7 @@ def form():
     return TemplateResponse(contexto)
 
 
-def salvar(_logged_user,**propriedades):
+def salvar(_logged_user, **propriedades):
     book_form = BookForm(**propriedades)
     erros = book_form.validate()
     if erros:
@@ -84,11 +75,19 @@ def salvar(_logged_user,**propriedades):
         return TemplateResponse(contexto, 'books/form.html')
     else:
         book = book_form.fill_model()
-        chave_do_livro=book.put()
-        chave_de_usuario=_logged_user.key
-        autor_arco=AutorArco(origin=chave_de_usuario,destination=chave_do_livro)
+        chave_do_livro = book.put()
+        chave_de_usuario = _logged_user.key
+        autor_arco = AutorArco(origin=chave_de_usuario, destination=chave_do_livro)
         autor_arco.put()
         return RedirectResponse(router.to_path(index))
+
+
+def delete(book_id):
+    apagar_cmd = ApagarLivro(book_id)
+    apagar_arcos = ApagarAutorArcos(book_id)
+    comandos_paralelos = CommandParallel(apagar_cmd, apagar_arcos)
+    comandos_paralelos()
+    return RedirectResponse(router.to_path(index))
 
 
 # Modelos
@@ -117,4 +116,30 @@ class BookForm(ModelForm):
     _include = [Book.title, Book.release, Book.price]
 
 
+# Comandos
+class ApagarLivro(Command):
+    def __init__(self, livro_id):
+        super(ApagarLivro, self).__init__()
+        self.livro_key = ndb.Key(Book, int(livro_id))
+        self.futuro = None
 
+    def set_up(self):
+        self.futuro = self.livro_key.delete_async()
+
+    def do_business(self):
+        self.futuro.get_result()
+
+
+class ApagarAutorArcos(Command):
+    def __init__(self, livro_id):
+        super(ApagarAutorArcos, self).__init__()
+        chave_do_livro = ndb.Key(Book, int(livro_id))
+        self.query = AutorArco.find_origins(chave_do_livro)
+        self.futuro = None
+
+    def set_up(self):
+        self.futuro = self.query.fetch_async(keys_only=True)
+
+    def do_business(self):
+        chaves_dos_arcos = self.futuro.get_result()
+        ndb.delete_multi(chaves_dos_arcos)

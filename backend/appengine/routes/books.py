@@ -4,10 +4,10 @@ from __future__ import absolute_import, unicode_literals
 from google.appengine.ext import ndb
 
 from config.template_middleware import TemplateResponse
-from gaebusiness.business import Command, CommandParallel
+from gaebusiness.business import Command, CommandParallel, CommandExecutionException, CommandSequential
 from gaecookie.decorator import no_csrf
 from gaeforms.ndb.form import ModelForm
-from gaegraph.model import Node, Arc
+from gaegraph.model import Node, Arc, to_node_key
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 
@@ -65,29 +65,24 @@ def form():
     return TemplateResponse(contexto)
 
 
-def salvar(_logged_user, **propriedades):
-    book_form = BookForm(**propriedades)
-    erros = book_form.validate()
-    if erros:
-        contexto = {'salvar_path': router.to_path(salvar),
-                    'erros': erros,
-                    'book': book_form}
-        return TemplateResponse(contexto, 'books/form.html')
-    else:
-        book = book_form.fill_model()
-        chave_do_livro = book.put()
-        chave_de_usuario = _logged_user.key
-        autor_arco = AutorArco(origin=chave_de_usuario, destination=chave_do_livro)
-        autor_arco.put()
-        return RedirectResponse(router.to_path(index))
-
-
 def delete(book_id):
     apagar_cmd = ApagarLivro(book_id)
     apagar_arcos = ApagarAutorArcos(book_id)
     comandos_paralelos = CommandParallel(apagar_cmd, apagar_arcos)
     comandos_paralelos()
     return RedirectResponse(router.to_path(index))
+
+
+def salvar(_logged_user, **propriedades):
+    salvar_livro_com_autor_cmd = SalvarLivroComAutor(_logged_user,**propriedades)
+    try:
+        salvar_livro_com_autor_cmd()
+        return RedirectResponse(router.to_path(index))
+    except CommandExecutionException:
+        contexto = {'salvar_path': router.to_path(salvar),
+                    'erros': salvar_livro_com_autor_cmd.errors,
+                    'book': propriedades}
+        return TemplateResponse(contexto, 'books/form.html')
 
 
 # Modelos
@@ -117,6 +112,41 @@ class BookForm(ModelForm):
 
 
 # Comandos
+
+class SalvarLivroComAutor(CommandSequential):
+    def __init__(self, autor, **propriedades_do_livro):
+        salvar_livro_cmd = SalvarLivro(**propriedades_do_livro)
+        salvar_autor_cmd = SalvarAutor(autor)
+        super(SalvarLivroComAutor, self).__init__(salvar_livro_cmd, salvar_autor_cmd)
+
+
+class SalvarAutor(Command):
+    def __init__(self, autor, livro=None):
+        super(SalvarAutor, self).__init__()
+        self.autor = to_node_key(autor)
+        self.livro = livro and to_node_key(livro)
+
+    def do_business(self):
+        self.result = AutorArco(origin=self.autor, destination=self.livro)
+        self._to_commit = self.result
+
+    def handle_previous(self, command):
+        self.livro = command.result
+
+
+class SalvarLivro(Command):
+    def __init__(self, **propriedades):
+        super(SalvarLivro, self).__init__()
+        self.form = BookForm(**propriedades)
+
+    def do_business(self):
+        erros = self.form.validate()
+        self.errors = erros
+        if not erros:
+            self._to_commit = self.form.fill_model()
+            self.result = self._to_commit
+
+
 class ApagarLivro(Command):
     def __init__(self, livro_id):
         super(ApagarLivro, self).__init__()

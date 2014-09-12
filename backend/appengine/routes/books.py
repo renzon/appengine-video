@@ -33,7 +33,11 @@ def index(_logged_user):
 
 def delete(book_id):
     chave = ndb.Key(Book, int(book_id))
-    chave.delete()
+    futuro=chave.delete_async()
+    query = AutorArco.find_origins(chave)
+    chaves_dos_arcos=query.fetch(keys_only=True)
+    ndb.delete_multi(chaves_dos_arcos)
+    futuro.get_result()
     return RedirectResponse(router.to_path(index))
 
 

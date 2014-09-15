@@ -2,13 +2,9 @@
 from __future__ import absolute_import, unicode_literals
 
 from config.template_middleware import TemplateResponse
-from gaebusiness.business import CommandParallel, CommandExecutionException
+from gaebusiness.business import CommandExecutionException
 from gaecookie.decorator import no_csrf
-from gaegraph.business_base import DeleteNode, NodeSearch
-from gaegraph.model import to_node_key
 from livro_app import fachada
-from livro_app.comandos import BookFormTable, BookForm, EditarLivro, ApagarAutorArcos, \
-    SalvarLivroComAutor
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
 
@@ -18,7 +14,7 @@ from tekton.gae.middleware.redirect import RedirectResponse
 def index(_logged_user):
     buscar_livros_cmd = fachada.listar_livros_de_autor_cmd(_logged_user)
     livro_lista = buscar_livros_cmd()
-    book_form = BookFormTable()
+    book_form = fachada.livro_tabela_form()
     livro_lista = [book_form.fill_with_model(livro) for livro in livro_lista]
     editar_form_path = router.to_path(editar_form)
     delete_path = router.to_path(delete)
@@ -32,9 +28,9 @@ def index(_logged_user):
 
 @no_csrf
 def editar_form(book_id):
-    busca_cmd = NodeSearch(book_id)
+    busca_cmd = fachada.get_livro(book_id)
     book = busca_cmd()
-    book_form = BookForm()
+    book_form = fachada.livro_form()
     book_form.fill_with_model(book)
     contexto = {'salvar_path': router.to_path(editar, book_id),
                 'book': book_form}
@@ -42,7 +38,7 @@ def editar_form(book_id):
 
 
 def editar(book_id, **propriedades):
-    editar_cmd = EditarLivro(to_node_key(book_id), **propriedades)
+    editar_cmd = fachada.editar_livro(book_id,**propriedades)
     try:
         editar_cmd()
         return RedirectResponse(router.to_path(index))
@@ -61,15 +57,13 @@ def form():
 
 
 def delete(book_id):
-    apagar_cmd = DeleteNode(book_id)
-    apagar_arcos = ApagarAutorArcos(book_id)
-    comandos_paralelos = CommandParallel(apagar_cmd, apagar_arcos)
-    comandos_paralelos()
+    apagar_livro_cmd=fachada.apagar_livro_cmd(book_id)
+    apagar_livro_cmd()
     return RedirectResponse(router.to_path(index))
 
 
 def salvar(_logged_user, **propriedades):
-    salvar_livro_com_autor_cmd = SalvarLivroComAutor(_logged_user, **propriedades)
+    salvar_livro_com_autor_cmd = fachada.salvar_livro(_logged_user, **propriedades)
     try:
         salvar_livro_com_autor_cmd()
         return RedirectResponse(router.to_path(index))

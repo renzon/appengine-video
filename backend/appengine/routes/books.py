@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 from config.template_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
 from gaecookie.decorator import no_csrf
+from gaepermission import facade
 from livro_app import fachada
 from tekton import router
 from tekton.gae.middleware.redirect import RedirectResponse
@@ -38,7 +39,7 @@ def editar_form(book_id):
 
 
 def editar(book_id, **propriedades):
-    editar_cmd = fachada.editar_livro(book_id,**propriedades)
+    editar_cmd = fachada.editar_livro(book_id, **propriedades)
     try:
         editar_cmd()
         return RedirectResponse(router.to_path(index))
@@ -53,25 +54,27 @@ def editar(book_id, **propriedades):
 @no_csrf
 def form():
     contexto = {'salvar_path': router.to_path(salvar)}
-    return TemplateResponse(contexto)
+    return TemplateResponse(contexto, 'books/form_novo.html')
 
 
 def delete(book_id):
-    apagar_livro_cmd=fachada.apagar_livro_cmd(book_id)
+    apagar_livro_cmd = fachada.apagar_livro_cmd(book_id)
     apagar_livro_cmd()
     return RedirectResponse(router.to_path(index))
 
 
-def salvar(_logged_user, **propriedades):
-    salvar_livro_com_autor_cmd = fachada.salvar_livro(_logged_user, **propriedades)
+def salvar(email, **propriedades):
+    get_user_by_email_cmd = facade.get_user_by_email(email)
+    salvar_livro_com_autor_cmd = fachada.salvar_livro(get_user_by_email_cmd, **propriedades)
     try:
         salvar_livro_com_autor_cmd()
         return RedirectResponse(router.to_path(index))
     except CommandExecutionException:
         contexto = {'salvar_path': router.to_path(salvar),
                     'erros': salvar_livro_com_autor_cmd.errors,
+                    'email': email,
                     'book': propriedades}
-        return TemplateResponse(contexto, 'books/form.html')
+        return TemplateResponse(contexto, 'books/form_novo.html')
 
 
 

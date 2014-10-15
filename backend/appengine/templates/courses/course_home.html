@@ -3,6 +3,15 @@
     <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
     <script type="text/javascript" src="/static/curso/js/curso.js"></script>
     <script type="text/javascript">
+        var rest=angular.module('rest',[]);
+        rest.factory('CursoApi',function($http){
+            return {
+                salvar: function(curso){
+                    return $http.post('/courses/rest/new',curso);
+                }
+            };
+
+        });
 
         var cursoApp = angular.module('cursoApp', ['cursoModulo']);
         function CursoController($scope) {

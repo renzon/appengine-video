@@ -1,4 +1,4 @@
-var cursoModulo=angular.module('cursoModulo',[]);
+var cursoModulo=angular.module('cursoModulo',['rest']);
 
 cursoModulo.directive('cursoform',function(){
     return{
@@ -10,12 +10,12 @@ cursoModulo.directive('cursoform',function(){
             priceLabel: '@',
             titleLabel: '@'
         },
-        controller:function($scope, $http){
+        controller:function($scope, CursoApi){
             $scope.salvandoFlag=false;
             $scope.salvar=function(){
                 $scope.salvandoFlag=true;
                 $scope.errors={};
-                $http.post('/courses/rest/new',$scope.course).success(function(course){
+                CursoApi.salvar($scope.course).success(function(course){
                     console.log(course);
                     $scope.course.title='';
                     $scope.course.price='';

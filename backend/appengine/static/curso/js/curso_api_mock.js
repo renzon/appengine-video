@@ -2,7 +2,7 @@
  * Created by renzo on 10/15/14.
  */
 var rest = angular.module('rest', []);
-rest.factory('CursoApi', function () {
+rest.factory('CursoApi', function ($rootScope) {
     return {
         salvar: function (curso) {
             var obj = {};
@@ -16,7 +16,7 @@ rest.factory('CursoApi', function () {
             setTimeout(function () {
                 curso.id = 1;
                 obj.fcnSucesso(curso);
-
+                $rootScope.$digest();
             }, 1000);
 
             return obj;

@@ -6,7 +6,6 @@ from gaeforms.ndb import property
 
 
 class Course(Node):
-    name = ndb.StringProperty(required=True)
+    title = ndb.StringProperty(required=True)
     price = property.SimpleCurrency(required=True)
-    start_date = ndb.DateProperty(required=True)
 

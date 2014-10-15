@@ -13,8 +13,7 @@
                     <form action="{{ save_path }}" method="post" role="form">
                         {{ csrf_input() }}
                         {{ form_input(_('Price'),'price',course.price,errors.price) }}
-                        {{ form_input(_('Start Date'),'start_date',course.start_date,errors.start_date) }}
-                        {{ form_input(_('Name'),'name',course.name,errors.name) }}
+                        {{ form_input(_('Title'),'title',course.title,errors.title) }}
                         <button type="submit" class="btn btn-success">{% trans %}Save{% endtrans %}</button>
                     </form>
                 </div>

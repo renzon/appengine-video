@@ -13,8 +13,7 @@ class CourseSaveForm(ModelForm):
     """
     _model_class = Course
     _include = [Course.price, 
-                Course.start_date, 
-                Course.name]
+                Course.title]
 
 
 class CourseForm(ModelForm):

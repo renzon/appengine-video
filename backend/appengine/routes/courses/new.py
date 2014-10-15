@@ -2,21 +2,19 @@
 from __future__ import absolute_import, unicode_literals
 from config.template_middleware import TemplateResponse
 from gaebusiness.business import CommandExecutionException
-from gaepermission.decorator import login_not_required
+from gaepermission.decorator import login_required
 from tekton import router
 from gaecookie.decorator import no_csrf
 from course_app import course_facade
 from routes import courses
 from tekton.gae.middleware.redirect import RedirectResponse
 
-
-@login_not_required
+@login_required
 @no_csrf
 def index():
     return TemplateResponse({'save_path': router.to_path(save)}, 'courses/course_form.html')
 
-@login_not_required
-@no_csrf
+@login_required
 def save(**course_properties):
     cmd = course_facade.save_course_cmd(**course_properties)
     try:

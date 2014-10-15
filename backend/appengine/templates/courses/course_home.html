@@ -14,8 +14,7 @@
                         <th>{% trans %}Id{% endtrans %}</th>
                         <th>{% trans %}Creation{% endtrans %}</th>
                         <th>{% trans %}Price{% endtrans %}</th>
-                        <th>{% trans %}Start Date{% endtrans %}</th>
-                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}Title{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -26,8 +25,7 @@
                             <td>{{ course.id }}</td>
                             <td>{{ course.creation }}</td>
                             <td>{{ course.price }}</td>
-                            <td>{{ course.start_date }}</td>
-                            <td>{{ course.name }}</td>
+                            <td>{{ course.title }}</td>
                             <td>
                                 <form action="{{ course.delete_path }}" method="post" onsubmit="return confirm('{{_('Are you sure to delete? Press cancel to avoid deletion.')}}');">
                                     {{ csrf_input() }}

@@ -4,7 +4,6 @@ cursoModulo.directive('cursoform',function(){
     return{
         restrict: 'E',
         replace:true,
-        template:'<input type="text" />'
-
+        templateUrl:'/static/curso/html/curso_form.html'
     };
 });

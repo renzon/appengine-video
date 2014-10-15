@@ -11,12 +11,20 @@ cursoModulo.directive('cursoform',function(){
             titleLabel: '@'
         },
         controller:function($scope, $http){
+            $scope.salvandoFlag=false;
             $scope.salvar=function(){
+                $scope.salvandoFlag=true;
                 $http.post('/courses/rest/new',$scope.course).success(function(course){
                     console.log(course);
-                }).error(function(erros){
+                    $scope.course.title='';
+                    $scope.course.price='';
+                    $scope.salvandoFlag=false;
+                }).error(function(errors){
                     console.log(errors);
+                    $scope.salvandoFlag=false;
                 });
+
+
             }
 
         }

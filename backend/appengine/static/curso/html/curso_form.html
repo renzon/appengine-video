@@ -10,5 +10,6 @@
             <input id="titleInput" type="text" class="form-control" ng-model="course.title">
         </div>
 
-        <button type="submit" class="btn btn-success" ng-click="salvar()" >Save</button>
+        <button type="submit" class="btn btn-success" ng-click="salvar()" ng-hide="salvandoFlag" >Save</button>
+            <img src="/static/img/ajax.gif" ng-show="salvandoFlag" />
 </div>

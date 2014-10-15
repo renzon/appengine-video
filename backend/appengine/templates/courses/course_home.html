@@ -1,10 +1,17 @@
 {% extends 'courses/course_base.html' %}
+{% block js %}
+    <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" ng-app>
+
                 <h1>{% trans %}This is a generic home for course_app {% endtrans %}  </h1>
+            <input type="text" ng-model="curso.name" />
+            <input type="text" ng-model="curso.name" />
                 <a href="{{ new_path }}" class="btn btn-success">{% trans %}Create New Course{% endtrans %}</a>
+
                 <hr/>
                 <h2>{% trans %}List of Courses{% endtrans %}</h2>
                 <table class="table table-striped table-hover">

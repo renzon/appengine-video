@@ -1,7 +1,10 @@
 {% extends 'courses/course_base.html' %}
 {% block js %}
     <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
+    <script type="text/javascript" src="/static/curso/js/curso.js"></script>
     <script type="text/javascript">
+
+        var cursoApp=angular.module('cursoApp',['cursoModulo']);
         function CursoController($scope){
             $scope.curso={nome:'App Engine'};
 
@@ -11,13 +14,12 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-md-12" ng-app ng-controller="CursoController">
+            <div class="col-md-12" ng-app="cursoApp" ng-controller="CursoController">
 
                 <h1>{% trans %}This is a generic home for course_app {% endtrans %}  </h1>
-            <input type="text" ng-model="curso.nome" />
-            <input type="text" ng-model="curso.nome" />
+                <cursoform></cursoform>
                 <a href="{{ new_path }}" class="btn btn-success">{% trans %}Create New Course{% endtrans %}</a>
-
+                <cursoform></cursoform>
                 <hr/>
                 <h2>{% trans %}List of Courses{% endtrans %}</h2>
                 <table class="table table-striped table-hover">

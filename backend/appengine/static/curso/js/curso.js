@@ -4,6 +4,11 @@ cursoModulo.directive('cursoform',function(){
     return{
         restrict: 'E',
         replace:true,
-        templateUrl:'/static/curso/html/curso_form.html'
+        templateUrl:'/static/curso/html/curso_form.html',
+        scope:{
+            course: '=',
+            priceLabel: '@',
+            titleLabel: '@'
+        }
     };
 });

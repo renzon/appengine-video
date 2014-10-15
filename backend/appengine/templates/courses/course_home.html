@@ -6,7 +6,7 @@
 
         var cursoApp = angular.module('cursoApp', ['cursoModulo']);
         function CursoController($scope) {
-            $scope.curso = {nome: 'App Engine'};
+            $scope.curso = {title: 'App Engine',price:'1,00'};
             $scope.mostrarFormFlag = false;
 
             $scope.mostrarOuEsconderForm=function(){
@@ -25,7 +25,8 @@
                 <button class="btn btn-success" ng-click="mostrarOuEsconderForm()">Criar Novo Curso</button>
                 <br/>
                 <br/>
-                <cursoform ng-show="mostrarFormFlag"></cursoform>
+                <cursoform ng-show="mostrarFormFlag" course="curso" title-label="Título" price-label="Preço"></cursoform>
+                <input type="text" ng-model="curso.title">
                 <hr/>
                 <h2>{% trans %}List of Courses{% endtrans %}</h2>
                 <table class="table table-striped table-hover">

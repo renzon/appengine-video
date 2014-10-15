@@ -5,7 +5,7 @@ from gaepermission.decorator import login_required
 from tekton import router
 from gaecookie.decorator import no_csrf
 from course_app import course_facade
-from routes.courses import new, edit
+from routes.courses import new, edit, rest
 from tekton.gae.middleware.redirect import RedirectResponse
 
 @login_required
@@ -25,7 +25,7 @@ def index():
 
     localized_courses = [localize_course(course) for course in courses]
     context = {'courses': localized_courses,
-               'new_path': router.to_path(new)}
+               'rest_new_path': router.to_path(rest.new)}
     return TemplateResponse(context, 'courses/course_home.html')
 
 

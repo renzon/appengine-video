@@ -15,12 +15,14 @@ cursoModulo.directive('cursoform',function(){
             $scope.salvar=function(){
                 $scope.salvandoFlag=true;
                 $scope.errors={};
-                CursoApi.salvar($scope.course).success(function(course){
+                var promessa = CursoApi.salvar($scope.course);
+                promessa.success(function(course){
                     console.log(course);
                     $scope.course.title='';
                     $scope.course.price='';
                     $scope.salvandoFlag=false;
-                }).error(function(errors){
+                })
+                promessa.error(function(errors){
                     $scope.errors=errors;
                     console.log(errors);
                     $scope.salvandoFlag=false;

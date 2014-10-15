@@ -9,6 +9,16 @@ cursoModulo.directive('cursoform',function(){
             course: '=',
             priceLabel: '@',
             titleLabel: '@'
+        },
+        controller:function($scope, $http){
+            $scope.salvar=function(){
+                $http.post('/courses/rest/new',$scope.course).success(function(course){
+                    console.log(course);
+                }).error(function(erros){
+                    console.log(errors);
+                });
+            }
+
         }
     };
 });

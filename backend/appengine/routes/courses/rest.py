@@ -31,8 +31,8 @@ def _save_or_update_json_response(cmd, _resp):
     try:
         course = cmd()
     except CommandExecutionException:
-        _resp.status_code = 400
-        return JsonResponse({'errors': cmd.errors})
+        _resp.status_code = 500
+        return JsonResponse(cmd.errors)
     course_form=course_facade.course_form()
     return JsonResponse(course_form.fill_with_model(course))
 

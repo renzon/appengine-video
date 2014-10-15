@@ -2,22 +2,23 @@
 {% block js %}
     <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
     <script type="text/javascript" src="/static/curso/js/curso.js"></script>
-    <script type="text/javascript" src="/static/curso/js/curso_api_mock.js"></script>
+{#    <script type="text/javascript" src="/static/curso/js/curso_api_mock.js"></script>#}
     <script type="text/javascript">
-{#        var rest = angular.module('rest', []);#}
-{#        rest.factory('CursoApi', function ($http) {#}
-{#            return {#}
-{#                salvar: function (curso) {#}
-{#                    return $http.post('{{ rest_new_path }}', curso);#}
-{#                }#}
-{#            };#}
-{#        });#}
+        var rest = angular.module('rest', []);
+        rest.factory('CursoApi', function ($http) {
+            return {
+                salvar: function (curso) {
+                    return $http.post('{{ rest_new_path }}', curso);
+                }
+            };
+        });
 
 
         var cursoApp = angular.module('cursoApp', ['cursoModulo']);
         function CursoController($scope) {
             $scope.curso = {title: 'App Engine', price: '1,00'};
             $scope.mostrarFormFlag = false;
+            $scope.cursoLista=[{price:'1,00'},{price:'1,00'}];
 
             $scope.mostrarOuEsconderForm = function () {
                 $scope.mostrarFormFlag = !$scope.mostrarFormFlag;
@@ -50,24 +51,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for course in courses %}
-                        <tr>
-                            <td><a href="{{ course.edit_path }}" class="btn btn-success btn-sm"><i
-                                    class="glyphicon glyphicon-pencil"></i></a></td>
-                            <td>{{ course.id }}</td>
-                            <td>{{ course.creation }}</td>
-                            <td>{{ course.price }}</td>
-                            <td>{{ course.title }}</td>
-                            <td>
-                                <form action="{{ course.delete_path }}" method="post"
-                                      onsubmit="return confirm('{{ _('Are you sure to delete? Press cancel to avoid deletion.') }}');">
-                                    {{ csrf_input() }}
-                                    <button class="btn btn-danger btn-sm"><i
-                                            class="glyphicon glyphicon-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                        <cursolinha ng-repeat="c in cursoLista" curso="c"></cursolinha>
+
+
                     </tbody>
                 </table>
             </div>

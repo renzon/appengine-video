@@ -1,13 +1,15 @@
 <div class="well">
     <h1 class="text-center">Formulário de Curso</h1>
-        <div class="form-group ">
+        <div class="form-group" ng-class="{true: '', false: 'has-error'}[errors.price==null]">
             <label for="priceInput" class="control-label">{{ priceLabel }}</label>
             <input id="priceInput" type="text" class="form-control" ng-model="course.price">
+            <span class="help-block" ng-show="errors.price">{{ errors.price }}</span>
         </div>
 
-        <div class="form-group ">
+        <div class="form-group" ng-class="{true: '', false: 'has-error'}[errors.title==null]">
             <label for="titleInput" class="control-label">{{ titleLabel }} </label>
             <input id="titleInput" type="text" class="form-control" ng-model="course.title">
+            <span class="help-block" ng-show="errors.price">{{ errors.title }}</span>
         </div>
 
         <button type="submit" class="btn btn-success" ng-click="salvar()" ng-hide="salvandoFlag" >Save</button>

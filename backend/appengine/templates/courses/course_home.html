@@ -18,7 +18,7 @@
         function CursoController($scope) {
             $scope.curso = {title: 'App Engine', price: '1,00'};
             $scope.mostrarFormFlag = false;
-            $scope.cursoLista=[{price:'1,00'},{price:'1,00'}];
+            $scope.cursoLista={{ courses|safe }};
 
             $scope.mostrarOuEsconderForm = function () {
                 $scope.mostrarFormFlag = !$scope.mostrarFormFlag;
@@ -51,7 +51,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <cursolinha ng-repeat="c in cursoLista" curso="c"></cursolinha>
+                        <tr cursolinha ng-repeat="c in cursoLista" course="c"></tr>
 
 
                     </tbody>

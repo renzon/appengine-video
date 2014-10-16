@@ -37,7 +37,6 @@ cursoModulo.directive('cursoform',function(){
 
 cursoModulo.directive('cursolinha',function(){
     return{
-        restrict: 'E',
         replace:true,
         templateUrl:'/static/curso/html/curso_linha_tabela.html',
         scope:{

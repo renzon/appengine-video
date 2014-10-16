@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
+import json
 from config.template_middleware import TemplateResponse
 from gaepermission.decorator import login_required
 from tekton import router
@@ -13,18 +14,10 @@ from tekton.gae.middleware.redirect import RedirectResponse
 def index():
     cmd = course_facade.list_courses_cmd()
     courses = cmd()
-    edit_path = router.to_path(edit)
-    delete_path = router.to_path(delete)
     course_form = course_facade.course_form()
-
-    def localize_course(course):
-        course_dct = course_form.fill_with_model(course)
-        course_dct['edit_path'] = router.to_path(edit_path, course_dct['id'])
-        course_dct['delete_path'] = router.to_path(delete_path, course_dct['id'])
-        return course_dct
-
-    localized_courses = [localize_course(course) for course in courses]
-    context = {'courses': localized_courses,
+    localized_courses = [course_form.fill_with_model(course) for course in courses]
+    str_json=json.dumps(localized_courses)
+    context = {'courses': str_json,
                'rest_new_path': router.to_path(rest.new)}
     return TemplateResponse(context, 'courses/course_home.html')
 

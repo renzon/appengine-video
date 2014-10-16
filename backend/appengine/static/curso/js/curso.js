@@ -8,7 +8,8 @@ cursoModulo.directive('cursoform',function(){
         scope:{
             course: '=',
             priceLabel: '@',
-            titleLabel: '@'
+            titleLabel: '@',
+            saveComplete: '&'
         },
         controller:function($scope, CursoApi){
             $scope.salvandoFlag=false;
@@ -17,14 +18,15 @@ cursoModulo.directive('cursoform',function(){
                 $scope.errors={};
                 var promessa = CursoApi.salvar($scope.course);
                 promessa.success(function(course){
-                    console.log(course);
                     $scope.course.title='';
                     $scope.course.price='';
                     $scope.salvandoFlag=false;
+                    if ($scope.saveComplete != undefined){
+                        $scope.saveComplete({'curso':course});
+                    }
                 })
                 promessa.error(function(errors){
                     $scope.errors=errors;
-                    console.log(errors);
                     $scope.salvandoFlag=false;
                 });
 

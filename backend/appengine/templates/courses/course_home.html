@@ -33,6 +33,10 @@
                 $scope.mostrarFormFlag = !$scope.mostrarFormFlag;
             }
 
+            $scope.adicionarCurso=function(curso){
+                $scope.cursoLista.unshift(curso);
+            }
+
         }
     </script>
 {% endblock %}
@@ -46,7 +50,8 @@
                 <br/>
                 <br/>
                 <cursoform ng-show="mostrarFormFlag" course="curso" title-label="Título"
-                           price-label="Preço"></cursoform>
+                           price-label="Preço"
+                        save-complete="adicionarCurso(curso)"></cursoform>
                 <hr/>
                 <h2>{% trans %}List of Courses{% endtrans %}</h2>
                 <table class="table table-striped table-hover">

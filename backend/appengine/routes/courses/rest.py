@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.business import CommandExecutionException
+from gaecookie.decorator import no_csrf
 from tekton.gae.middleware.json_middleware import JsonResponse
 from course_app import course_facade
 
-
+@no_csrf
 def index():
     cmd = course_facade.list_courses_cmd()
     course_list = cmd()

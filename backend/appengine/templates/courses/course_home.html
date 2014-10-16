@@ -9,16 +9,25 @@
             return {
                 salvar: function (curso) {
                     return $http.post('{{ rest_new_path }}', curso);
+                },
+                listar: function(){
+                    return $http.post('{{ rest_list_path }}');
                 }
             };
         });
 
 
-        var cursoApp = angular.module('cursoApp', ['cursoModulo']);
-        function CursoController($scope) {
+        var cursoApp = angular.module('cursoApp', ['cursoModulo','rest']);
+
+        function CursoController($scope,CursoApi) {
             $scope.curso = {title: 'App Engine', price: '1,00'};
             $scope.mostrarFormFlag = false;
-            $scope.cursoLista={{ courses|safe }};
+            $scope.cursoLista=[];
+            $scope.listandoFlag=true;
+            CursoApi.listar().success(function(cursos){
+                $scope.cursoLista=cursos;
+                $scope.listandoFlag=false;
+            });
 
             $scope.mostrarOuEsconderForm = function () {
                 $scope.mostrarFormFlag = !$scope.mostrarFormFlag;
@@ -52,10 +61,9 @@
                     </thead>
                     <tbody>
                         <tr cursolinha ng-repeat="c in cursoLista" course="c"></tr>
-
-
                     </tbody>
                 </table>
+            <img src="/static/img/ajax.gif" ng-show="listandoFlag" />
             </div>
         </div>
     </div>

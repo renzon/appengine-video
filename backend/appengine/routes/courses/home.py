@@ -12,12 +12,7 @@ from tekton.gae.middleware.redirect import RedirectResponse
 @login_required
 @no_csrf
 def index():
-    cmd = course_facade.list_courses_cmd()
-    courses = cmd()
-    course_form = course_facade.course_form()
-    localized_courses = [course_form.fill_with_model(course) for course in courses]
-    str_json=json.dumps(localized_courses)
-    context = {'courses': str_json,
+    context = {'rest_list_path': router.to_path(rest.index),
                'rest_new_path': router.to_path(rest.new)}
     return TemplateResponse(context, 'courses/course_home.html')
 

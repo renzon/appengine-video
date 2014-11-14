@@ -2,3 +2,8 @@ cron:
 - description: application secret renew
   url: /cookie/tasks/renew
   schedule: every sunday 04:00
+
+- description: Contagem diaria de vendas
+  url: /vendas/tarefas/contagem
+  schedule: every 1 mins synchronized
+

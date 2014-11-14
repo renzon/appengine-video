@@ -1,5 +1,5 @@
-application: pythonpro-gae
-version: 2
+application: tekton-fullstack
+version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -41,6 +41,11 @@ handlers:
   upload: static.*
 
 - url: /vendas/tarefas/contagem
+  script: convention.app
+  secure: always
+  login: admin
+
+- url: /.*tasks.*
   script: convention.app
   secure: always
   login: admin

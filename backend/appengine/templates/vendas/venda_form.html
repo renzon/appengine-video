@@ -12,7 +12,6 @@
 
                     <form action="{{ save_path }}" method="post" role="form">
                         {{ csrf_input() }}
-                        {{ form_input(_('Status'),'status',venda.status,errors.status) }}
                         {{ form_input(_('Preco'),'preco',venda.preco,errors.preco) }}
                         <button type="submit" class="btn btn-success">{% trans %}Save{% endtrans %}</button>
                     </form>

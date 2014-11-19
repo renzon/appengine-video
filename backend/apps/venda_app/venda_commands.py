@@ -6,14 +6,12 @@ from gaegraph.business_base import UpdateNode
 from venda_app.venda_model import Venda
 
 
-
 class VendaSaveForm(ModelForm):
     """
     Form used to save and update Venda
     """
     _model_class = Venda
-    _include = [Venda.status, 
-                Venda.preco]
+    _include = [Venda.preco]
 
 
 class VendaForm(ModelForm):
@@ -21,8 +19,6 @@ class VendaForm(ModelForm):
     Form used to expose Venda's properties for list or json
     """
     _model_class = Venda
-
-
 
 
 class SaveVendaCommand(SaveCommand):
@@ -36,4 +32,5 @@ class UpdateVendaCommand(UpdateNode):
 class ListVendaCommand(ModelSearchCommand):
     def __init__(self):
         super(ListVendaCommand, self).__init__(Venda.query_by_creation())
+
 

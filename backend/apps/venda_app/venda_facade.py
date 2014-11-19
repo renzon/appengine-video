@@ -1,7 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from gaegraph.business_base import NodeSearch, DeleteNode
-from venda_app.venda_commands import ListVendaCommand, SaveVendaCommand, UpdateVendaCommand, VendaForm
+from venda_app.venda_commands import ListVendaCommand, SaveVendaCommand, UpdateVendaCommand, VendaForm, \
+    ContabilizarVendaCmd
+
+
+def contabilizar_venda_cmd(cursor=None):
+    """
+    Comando utilizando para prcurar uma venda e alterar seu status.
+    A busca é feita por vendas com status igual a "NOVA" ordenadas
+    de forma crescente por data de crição
+    :param cursor: objeto cursor de ndb que indica de onde a busca deve começar
+    :return: Retorna u comando
+    """
+    return ContabilizarVendaCmd(cursor)
 
 
 def save_venda_cmd(**venda_properties):
@@ -46,7 +58,6 @@ def get_venda_cmd(venda_id):
     :return: Command
     """
     return NodeSearch(venda_id)
-
 
 
 def delete_venda_cmd(venda_id):

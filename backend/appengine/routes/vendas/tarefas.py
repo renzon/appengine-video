@@ -10,7 +10,7 @@ from tekton.router import to_path
 
 @login_not_required
 @no_csrf
-def contagem(total='0'):
+def contagem(total='0', cursor=None):
     # buscar um pagamento
     # incremetar o total das vendas
     # faço a busca novamente

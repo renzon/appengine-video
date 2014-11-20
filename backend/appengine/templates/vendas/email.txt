@@ -1,0 +1,5 @@
+ Olá Fulano,
+
+ O valor total das vendas foi de {{total}}.
+
+ Obrigado por utilizar os nossos servições

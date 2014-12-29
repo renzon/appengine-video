@@ -13,3 +13,4 @@ def index(_resp, nome):
     url_usuario = to_path(url_base, nome)
     resultado = urlfetch.fetch(url_usuario, headers={'Accept': 'application/vnd.github.v3+json'})
     _resp.write(resultado.content)
+    _resp.headerlist.append((str('Content-Type'), str('application/json')))

@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from gaebusiness.gaeutil import SaveCommand, ModelSearchCommand
 from gaeforms.ndb.form import ModelForm
-from gaegraph.business_base import UpdateNode
+from gaegraph.business_base import UpdateNode, NodeSearch, DeleteNode
 from course_app.course_model import Course
 
 
@@ -12,8 +12,7 @@ class CourseSaveForm(ModelForm):
     Form used to save and update Course
     """
     _model_class = Course
-    _include = [Course.price, 
-                Course.title]
+    _include = [Course.nome]
 
 
 class CourseForm(ModelForm):
@@ -23,6 +22,12 @@ class CourseForm(ModelForm):
     _model_class = Course
 
 
+class GetCourseCommand(NodeSearch):
+    _model_class = Course
+
+
+class DeleteCourseCommand(DeleteNode):
+    _model_class = Course
 
 
 class SaveCourseCommand(SaveCommand):

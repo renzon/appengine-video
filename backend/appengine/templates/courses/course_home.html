@@ -1,90 +1,40 @@
 {% extends 'courses/course_base.html' %}
-{% block js %}
-    <script type="text/javascript" src="/static/angular/js/angular.min.js"></script>
-    <script type="text/javascript" src="/static/curso/js/curso.js"></script>
-    {#    <script type="text/javascript" src="/static/curso/js/curso_api_mock.js"></script>#}
-    <script type="text/javascript">
-        var rest = angular.module('rest', []);
-        rest.factory('CursoApi', function ($http) {
-            return {
-                salvar: function (curso) {
-                    return $http.post('{{ rest_new_path }}', curso);
-                },
-                listar: function () {
-                    return $http.post('{{ rest_list_path }}');
-                },
-                deletar: function (id) {
-                    return $http.post('{{ rest_delete_path }}', {course_id: id});
-                },
-                editar: function (curso) {
-                    return $http.post('{{ rest_edit_path }}', {course_id: curso.id, title: curso.title, price: curso.price});
-                }
-            };
-        });
-
-
-        var cursoApp = angular.module('cursoApp', ['cursoModulo', 'rest']);
-
-        function CursoController($scope, CursoApi) {
-            $scope.curso = {title: 'App Engine', price: '1,00'};
-            $scope.mostrarFormFlag = false;
-            $scope.cursoLista = [];
-            $scope.listandoFlag = true;
-            CursoApi.listar().success(function (cursos) {
-                $scope.cursoLista = cursos;
-                $scope.listandoFlag = false;
-            });
-
-            $scope.mostrarOuEsconderForm = function () {
-                $scope.mostrarFormFlag = !$scope.mostrarFormFlag;
-            };
-
-            $scope.adicionarCurso = function (curso) {
-                $scope.cursoLista.unshift(curso);
-            };
-
-            $scope.removerCurso = function (curso) {
-                var cursoLista = $scope.cursoLista;
-                for (var i = 0; i < cursoLista.length; i += 1) {
-                    if (curso.id == cursoLista[i].id) {
-                        cursoLista.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-
-        }
-    </script>
-{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-md-12" ng-app="cursoApp" ng-controller="CursoController">
-
+            <div class="col-md-12">
                 <h1>{% trans %}This is a generic home for course_app {% endtrans %}  </h1>
-                <button class="btn btn-success" ng-click="mostrarOuEsconderForm()">Criar Novo Curso</button>
-                <br/>
-                <br/>
-                <cursoform ng-show="mostrarFormFlag" course="curso" title-label="Título"
-                           price-label="Preço"
-                           save-complete="adicionarCurso(curso)"></cursoform>
+                <a href="{{ new_path }}" class="btn btn-success">{% trans %}Create New Course{% endtrans %}</a>
                 <hr/>
                 <h2>{% trans %}List of Courses{% endtrans %}</h2>
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th/>
-                        <th>{% trans %}Title{% endtrans %}</th>
-                        <th>{% trans %}Price{% endtrans %}</th>
                         <th>{% trans %}Id{% endtrans %}</th>
                         <th>{% trans %}Creation{% endtrans %}</th>
+                        <th>{% trans %}Nome{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr cursolinha ng-repeat="c in cursoLista" course="c" delete-complete="removerCurso(curso)"></tr>
+                    {% for course in courses %}
+                        <tr>
+                            <td><a href="{{ course.edit_path }}" class="btn btn-success btn-sm"><i
+                                    class="glyphicon glyphicon-pencil"></i></a></td>
+                            <td>{{ course.id }}</td>
+                            <td>{{ course.creation }}</td>
+                            <td>{{ course.nome }}</td>
+                            <td>
+                                <form action="{{ course.delete_path }}" method="post" onsubmit="return confirm('{{_('Are you sure to delete? Press cancel to avoid deletion.')}}');">
+                                    {{ csrf_input() }}
+                                    <button class="btn btn-danger btn-sm"><i
+                                            class="glyphicon glyphicon-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
-                <img src="/static/img/ajax.gif" ng-show="listandoFlag"/>
             </div>
         </div>
     </div>

@@ -19,15 +19,15 @@ class BookForm(ModelForm):
 # Comandos
 
 class ListarLivrosDeAutor(DestinationsSearch):
-    def __init__(self, autor):
-        super(ListarLivrosDeAutor, self).__init__(AutorArco, autor)
-
+    arc_class = AutorArco
 
 
 class SalvarLivroComAutor(CreateArc):
+    arc_class = AutorArco
+
     def __init__(self, autor, **propriedades_do_livro):
         salvar_livro_cmd = SalvarLivro(**propriedades_do_livro)
-        super(SalvarLivroComAutor, self).__init__(AutorArco, autor, salvar_livro_cmd)
+        super(SalvarLivroComAutor, self).__init__(autor, salvar_livro_cmd)
 
 
 class SalvarLivro(SaveCommand):
@@ -39,5 +39,7 @@ class EditarLivro(UpdateCommand):
 
 
 class ApagarAutorArcos(DeleteArcs):
+    arc_class = AutorArco
+
     def __init__(self, livro):
-        super(ApagarAutorArcos, self).__init__(AutorArco, destination=livro)
+        super(ApagarAutorArcos, self).__init__(destination=livro)

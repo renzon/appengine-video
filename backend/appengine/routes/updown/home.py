@@ -7,7 +7,7 @@ from blob_app import blob_facade
 from config.template_middleware import TemplateResponse
 from gaecookie.decorator import no_csrf
 from tekton import router
-from routes.updown import upload
+from routes.updown import upload, download
 from tekton.gae.middleware.redirect import RedirectResponse
 
 
@@ -25,10 +25,12 @@ def index(_logged_user):
     cmd = blob_facade.list_blob_files_cmd(_logged_user)
     blob_form = blob_facade.blob_file_form()
     deletar_path_base = router.to_path(delete)
+    download_path_base = router.to_path(download)
 
     def localizar_blob(blob):
         dct = blob_form.fill_with_model(blob, 64)
         dct['delete_path'] = router.to_path(deletar_path_base, dct['id'])
+        dct['download_path'] = router.to_path(download_path_base, blob.blob_key)
         return dct
 
     blob_files = [localizar_blob(b) for b in cmd()]

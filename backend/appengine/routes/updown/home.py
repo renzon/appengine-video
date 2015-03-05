@@ -30,7 +30,7 @@ def index(_logged_user):
     def localizar_blob(blob):
         dct = blob_form.fill_with_model(blob, 64)
         dct['delete_path'] = router.to_path(deletar_path_base, dct['id'])
-        dct['download_path'] = router.to_path(download_path_base, blob.blob_key, dct['filename'].encode('utf8'))
+        dct['download_path'] = router.to_path(download_path_base, blob_key=blob.blob_key, filename=dct['filename'])
         return dct
 
     blob_files = [localizar_blob(b) for b in cmd()]

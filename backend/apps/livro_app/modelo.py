@@ -6,9 +6,9 @@ from gaegraph.model import Node, Arc
 
 class Book(Node):
     title = ndb.StringProperty(required=True)
-    price = ndb.FloatProperty()
+    price = ndb.FloatProperty(required=True)
 
-    release = ndb.DateProperty()
+    release = ndb.DateProperty(required=True)
 
 
 class AutorArco(Arc):

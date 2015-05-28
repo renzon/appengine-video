@@ -23,5 +23,5 @@ def save(**course_properties):
                    'course': course_properties}
 
         return TemplateResponse(context, 'courses/course_form.html')
-    return RedirectResponse(router.to_path(courses))
+    return RedirectResponse(courses)
 

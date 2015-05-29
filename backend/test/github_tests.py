@@ -4,7 +4,7 @@ from base import GAETestCase
 from mock import patch, Mock
 from routes import github
 
-USER_JSON='''{
+USER_JSON = '''{
   "login": "renzon",
   "id": 3457115,
   "avatar_url": "https://avatars.githubusercontent.com/u/3457115?v=3",
@@ -37,7 +37,7 @@ USER_JSON='''{
   "updated_at": "2015-04-27T20:40:06Z"
 }'''
 
-REPOS_JSON='''
+REPOS_JSON = '''
 [
   {
     "id": 19279089,
@@ -2652,9 +2652,10 @@ REPOS_JSON='''
 ]
 '''
 
+
 class GithubTests(GAETestCase):
     @patch('routes.github._chamar_api')
     def test_index(self, chamar_api):
-        chamar_api.return_value=(REPOS_JSON,USER_JSON)
-        resposta=github.index('renzon')
+        chamar_api.return_value = (REPOS_JSON, USER_JSON)
+        resposta = github.index('renzon')
         self.assert_can_render(resposta)
